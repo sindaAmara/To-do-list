@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+
+.tasklist {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  padding: 1.4rem 2rem;
+  background: linear-gradient(180deg, #fff5fb 0%, #f8f0ff 100%);
+  min-height: 100%;
+}
+
+.tasklist-item {
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #f0c4dd;
+  box-shadow: 0 2px 8px rgba(240, 150, 200, 0.1);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(4px);
+}
+
+.tasklist-item:hover {
+  box-shadow: 0 6px 20px rgba(232, 121, 160, 0.18);
+  transform: translateY(-1px);
+}
+
+.tasklist-item--open {
+  border-color: #e879a0;
+  box-shadow: 0 6px 24px rgba(232, 121, 160, 0.22);
+}
+
+.tasklist-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.tasklist-empty-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.tasklist-empty p {
+  font-family: 'Playfair Display', 'Times New Roman', serif;
+  font-size: 1.05rem;
+  font-style: italic;
+  color: #be689a;
+}
+
+.tasklist-empty-sub {
+  font-family: 'Playfair Display', 'Times New Roman', serif;
+  font-size: 0.82rem;
+  margin-top: 0.4rem;
+  color: #d4a0be;
+  font-style: italic;
+}

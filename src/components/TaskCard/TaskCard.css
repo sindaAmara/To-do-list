@@ -1,0 +1,295 @@
+.taskcard {
+  display: flex;
+  align-items: stretch;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+  transition: border-color 0.2s ease;
+  min-height: 60px;
+}
+
+.taskcard:hover {
+  border-color: var(--accent-light);
+}
+
+.taskcard-stripe {
+  width: 4px;
+  flex-shrink: 0;
+  border-radius: 14px 0 0 14px;
+}
+
+.taskcard-body {
+  flex: 1;
+  padding: 0.85rem 1rem;
+  min-width: 0;
+}
+
+.taskcard-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.taskcard-info {
+  flex: 1;
+  min-width: 0;
+}
+
+
+
+.taskcard-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.taskcard-title {
+  display: block;
+  font-family: 'Playfair Display', 'Times New Roman', serif;
+  font-weight: 700;
+  font-size: 0.97rem;
+  color: #7c3d6e;
+  margin-bottom: 0.35rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.taskcard-date {
+  font-family: 'Playfair Display', 'Times New Roman', serif;
+  font-style: italic;
+  font-size: 0.76rem;
+  color: #be689a;
+}
+
+.taskcard-date--overdue {
+  color: #FCA5A5;
+  font-weight: 700;
+}
+
+.taskcard-etat {
+  font-family: 'Playfair Display', 'Times New Roman', serif;
+  font-style: italic;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid;
+  white-space: nowrap;
+}
+
+.taskcard-side {
+  flex-shrink: 0;
+}
+
+.taskcard-cats {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.taskcard-cat {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.15s;
+}
+
+.taskcard-cat:hover {
+  opacity: 0.75;
+}
+
+.taskcard-cat--more {
+  background: var(--bg);
+  border-color: var(--border);
+  color: var(--text-muted);
+  cursor: default;
+}
+
+.taskcard-toggle {
+  flex-shrink: 0;
+  width: 36px;
+  background: transparent;
+  border: none;
+  border-left: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 0.65rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s;
+  padding: 0;
+}
+
+.taskcard-toggle:hover {
+  background: var(--bg);
+  color: var(--accent);
+}
+
+.taskcard-toggle--open {
+  font-size: 0.65rem;
+  color: var(--accent);
+}
+
+/* Mode complet */
+.taskcard--full .taskcard-body {
+  padding: 1rem 1.2rem;
+}
+
+.taskcard-description {
+  font-size: 0.84rem;
+  color: var(--text-muted);
+  margin: 0.7rem 0 0.5rem;
+  line-height: 1.5;
+  font-style: italic;
+}
+
+.taskcard-full-cats {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-top: 0.8rem;
+}
+
+.taskcard-cats-label {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  margin-right: 0.2rem;
+}
+
+.taskcard-no-cats {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.taskcard-equipiers {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.taskcard-equipier {
+  font-size: 0.72rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.15rem 0.6rem;
+  color: var(--text-muted);
+}
+
+.taskcard-equipier::before {
+  content: '👤 ';
+}
+
+.taskcard-full-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--border);
+}
+
+/* Edition */
+.taskcard-edit {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.taskcard-edit-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.taskcard-edit-row label {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.taskcard-input {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.45rem 0.7rem;
+  color: var(--text);
+  font-size: 0.88rem;
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  transition: border-color 0.15s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.taskcard-input:focus {
+  border-color: var(--accent);
+}
+
+.taskcard-textarea {
+  resize: vertical;
+  min-height: 70px;
+}
+
+.taskcard-edit-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+/* Buttons */
+.btn {
+  padding: 0.45rem 1.1rem;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  font-size: 0.84rem;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn--primary {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+.btn--primary:hover {
+  opacity: 0.88;
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--text-muted);
+  border-color: var(--border);
+}
+
+.btn--ghost:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn--sm {
+  padding: 0.3rem 0.8rem;
+  font-size: 0.78rem;
+}
