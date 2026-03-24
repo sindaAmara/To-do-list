@@ -4,8 +4,8 @@ import TaskForm from '../Modal/TaskForm'
 import FolderForm from '../Modal/FolderForm'
 import './Footer.css'
 
-export default function Footer({ onAddTask, onAddCategory }) {
-  const [modalType, setModalType] = useState(null) // null | 'task' | 'folder'
+export default function Footer({ onAddTask, onAddCategory, categories = [], onAddRelation }) {
+  const [modalType, setModalType] = useState(null)
 
   return (
     <>
@@ -36,6 +36,8 @@ export default function Footer({ onAddTask, onAddCategory }) {
           <TaskForm
             onSubmit={onAddTask}
             onClose={() => setModalType(null)}
+            categories={categories}
+            onAddRelation={onAddRelation}
           />
         </Modal>
       )}

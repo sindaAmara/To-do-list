@@ -3,7 +3,7 @@ import TaskCard from '../TaskCard/TaskCard'
 import TaskCardFull from '../TaskCard/TaskCardFull'
 import './TaskList.css'
 
-export default function TaskList({ tasks, categories, relations, onUpdateTask, onAddCategory, toggleDossier }) {
+export default function TaskList({ tasks, categories, relations, onUpdateTask, onDeleteTask, onAddCategory, toggleDossier }) {
   const [openIds, setOpenIds] = useState([])
 
   const toggleOpen = (id) => {
@@ -39,6 +39,7 @@ export default function TaskList({ tasks, categories, relations, onUpdateTask, o
                   allCategories={categories}
                   onToggle={() => toggleOpen(task.id)}
                   onUpdateTask={onUpdateTask}
+                  onDeleteTask={onDeleteTask}
                   onAddCategory={onAddCategory}
                   toggleDossier={toggleDossier}
                 />

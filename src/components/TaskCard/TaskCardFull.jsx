@@ -3,23 +3,21 @@ import { COULEURS, ETATS } from '../../constants/enums'
 import './TaskCard.css'
 
 const ETAT_COLORS = {
-  'Nouveau': '#6366F1',
-  'En cours': '#38BDF8',
-  'Réussi': '#22C55E',
-  'En attente': '#EAB308',
-  'Abandonné': '#EF4444',
+  'Nouveau': '#C084FC',
+  'En cours': '#67E8F9',
+  'Réussi': '#86EFAC',
+  'En attente': '#FDE68A',
+  'Abandonné': '#FCA5A5',
 }
 
 function formatDate(str) {
   if (!str) return ''
-  const d = new Date(str)
-  return d.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' })
+  return new Date(str).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' })
 }
 
 function toInputDate(str) {
   if (!str) return ''
-  const d = new Date(str)
-  return d.toISOString().split('T')[0]
+  return new Date(str).toISOString().split('T')[0]
 }
 
 function isOverdue(str) {
@@ -27,8 +25,9 @@ function isOverdue(str) {
   return new Date(str) < new Date()
 }
 
-export default function TaskCardFull({ task, categories, allCategories, onToggle, onUpdateTask, toggleDossier }) {
+export default function TaskCardFull({ task, categories, allCategories, onToggle, onUpdateTask, onDeleteTask, toggleDossier }) {
   const [editing, setEditing] = useState(false)
+  const [confirmDelete, setConfirmDelete] = useState(false)
   const [editTitle, setEditTitle] = useState(task.title)
   const [editDesc, setEditDesc] = useState(task.description)
   const [editDate, setEditDate] = useState(toInputDate(task.date_echeance))
@@ -39,7 +38,7 @@ export default function TaskCardFull({ task, categories, allCategories, onToggle
 
   const handleSave = () => {
     if (editTitle.trim().length < 5) return alert('Le titre doit faire au moins 5 caractères.')
-    if (!editDate) return alert('La date d\'échéance est obligatoire.')
+    if (!editDate) return alert("La date d'échéance est obligatoire.")
     onUpdateTask(task.id, {
       title: editTitle.trim(),
       description: editDesc,
@@ -47,6 +46,14 @@ export default function TaskCardFull({ task, categories, allCategories, onToggle
       etat: editEtat,
     })
     setEditing(false)
+  }
+
+  const handleDelete = () => {
+    if (confirmDelete) {
+      onDeleteTask(task.id)
+    } else {
+      setConfirmDelete(true)
+    }
   }
 
   return (
@@ -61,7 +68,6 @@ export default function TaskCardFull({ task, categories, allCategories, onToggle
                 className="taskcard-input"
                 value={editTitle}
                 onChange={e => setEditTitle(e.target.value)}
-                minLength={5}
               />
             </div>
             <div className="taskcard-edit-row">
@@ -145,13 +151,22 @@ export default function TaskCardFull({ task, categories, allCategories, onToggle
 
             <div className="taskcard-full-actions">
               <button className="btn btn--ghost btn--sm" onClick={() => setEditing(true)}>✏ Modifier</button>
+              <button
+                className={`btn btn--sm ${confirmDelete ? 'btn--danger-confirm' : 'btn--danger'}`}
+                onClick={handleDelete}
+              >
+                {confirmDelete ? '⚠ Confirmer ?' : '🗑 Supprimer'}
+              </button>
+              {confirmDelete && (
+                <button className="btn btn--ghost btn--sm" onClick={() => setConfirmDelete(false)}>
+                  Annuler
+                </button>
+              )}
             </div>
           </>
         )}
       </div>
-      <button className="taskcard-toggle taskcard-toggle--open" onClick={onToggle} title="Réduire">
-        ▼
-      </button>
+      <button className="taskcard-toggle taskcard-toggle--open" onClick={onToggle} title="Réduire">▼</button>
     </div>
   )
 }

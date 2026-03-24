@@ -1,19 +1,26 @@
 import { useState } from 'react'
-import { ETATS } from '../../constants/enums'
+import { ETATS, COULEURS } from '../../constants/enums'
 
-export default function TaskForm({ onSubmit, onClose }) {
+export default function TaskForm({ onSubmit, onClose, categories = [], onAddRelation }) {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [dateEcheance, setDateEcheance] = useState('')
   const [etat, setEtat] = useState(ETATS.NOUVEAU)
   const [equipiers, setEquipiers] = useState('')
+  const [selectedCats, setSelectedCats] = useState([])
   const [errors, setErrors] = useState({})
 
   const validate = () => {
     const errs = {}
     if (title.trim().length < 5) errs.title = 'Le titre doit faire au moins 5 caractères.'
-    if (!dateEcheance) errs.dateEcheance = 'La date d\'échéance est obligatoire.'
+    if (!dateEcheance) errs.dateEcheance = "La date d'échéance est obligatoire."
     return errs
+  }
+
+  const toggleCat = (id) => {
+    setSelectedCats(prev =>
+      prev.includes(id) ? prev.filter(c => c !== id) : [...prev, id]
+    )
   }
 
   const handleSubmit = () => {
@@ -26,7 +33,7 @@ export default function TaskForm({ onSubmit, onClose }) {
       .filter(Boolean)
       .map(name => ({ name }))
 
-    onSubmit({
+    const newTask = {
       id: Date.now(),
       title: title.trim(),
       description,
@@ -34,7 +41,16 @@ export default function TaskForm({ onSubmit, onClose }) {
       date_echeance: dateEcheance,
       etat,
       equipiers: eqList,
-    })
+    }
+
+    onSubmit(newTask)
+
+    if (onAddRelation) {
+      selectedCats.forEach(catId => {
+        onAddRelation({ tache: newTask.id, categorie: catId })
+      })
+    }
+
     onClose()
   }
 
@@ -91,6 +107,32 @@ export default function TaskForm({ onSubmit, onClose }) {
           placeholder="Paul, Marie, Bob (séparés par des virgules)"
         />
       </div>
+
+      {categories.length > 0 && (
+        <div className="form-field">
+          <label className="form-label">
+            Dossiers <span className="form-optional">— optionnel, plusieurs possibles</span>
+          </label>
+          <div className="form-cats">
+            {categories.map(cat => {
+              const isSelected = selectedCats.includes(cat.id)
+              const hex = COULEURS[cat.color] || '#888'
+              return (
+                <button
+                  key={cat.id}
+                  type="button"
+                  className={`form-cat-btn ${isSelected ? 'form-cat-btn--active' : ''}`}
+                  style={isSelected ? { borderColor: hex, background: hex + '22', color: hex } : {}}
+                  onClick={() => toggleCat(cat.id)}
+                >
+                  {cat.icon ? <span>{cat.icon} </span> : null}
+                  {cat.title}
+                </button>
+              )
+            })}
+          </div>
+        </div>
+      )}
 
       <div className="form-actions">
         <button className="btn btn--primary" onClick={handleSubmit}>Créer la tâche</button>

@@ -10,13 +10,26 @@ import DossierPage from './components/DossierPage/DossierPage'
 import './App.css'
 
 export default function App() {
-  const [started, setStarted] = useState(false)
+  const [started, setStarted] = useState(() =>
+    localStorage.getItem('started') === 'true'
+  )
   const [confirmReset, setConfirmReset] = useState(false)
-  const [tasks, setTasks] = useState([])
-  const [categories, setCategories] = useState([])
-  const [relations, setRelations] = useState([])
+
+  const [tasks, setTasks] = useState(() =>
+    JSON.parse(localStorage.getItem('tasks') || 'null') || []
+  )
+  const [categories, setCategories] = useState(() =>
+    JSON.parse(localStorage.getItem('categories') || 'null') || []
+  )
+  const [relations, setRelations] = useState(() =>
+    JSON.parse(localStorage.getItem('relations') || 'null') || []
+  )
   const [view, setView] = useState('tasks')
   const [selectedDossier, setSelectedDossier] = useState(null)
+
+  useEffect(() => { localStorage.setItem('tasks', JSON.stringify(tasks)) }, [tasks])
+  useEffect(() => { localStorage.setItem('categories', JSON.stringify(categories)) }, [categories])
+  useEffect(() => { localStorage.setItem('relations', JSON.stringify(relations)) }, [relations])
 
   const {
     tasksFiltrees, filtreEtats, filtreDossiers, filtreEnCours,
@@ -27,10 +40,15 @@ export default function App() {
     setTasks(initialData.tasks)
     setCategories(initialData.categories)
     setRelations(initialData.relations)
+    localStorage.setItem('started', 'true')
     setStarted(true)
   }
 
   const startBlank = () => {
+    localStorage.removeItem('tasks')
+    localStorage.removeItem('categories')
+    localStorage.removeItem('relations')
+    localStorage.setItem('started', 'true')
     setTasks([])
     setCategories([])
     setRelations([])
@@ -38,13 +56,35 @@ export default function App() {
   }
 
   const handleReset = () => {
-    if (confirmReset) { startBlank(); setConfirmReset(false) }
-    else setConfirmReset(true)
+    if (confirmReset) {
+      localStorage.removeItem('tasks')
+      localStorage.removeItem('categories')
+      localStorage.removeItem('relations')
+      localStorage.removeItem('started')
+      setTasks([])
+      setCategories([])
+      setRelations([])
+      setConfirmReset(false)
+      setStarted(false)
+    } else {
+      setConfirmReset(true)
+    }
   }
 
+  // ===== CRUD =====
   const addTask = (task) => setTasks(prev => [...prev, task])
   const updateTask = (id, changes) => setTasks(prev => prev.map(t => t.id === id ? { ...t, ...changes } : t))
+  const deleteTask = (id) => {
+    setTasks(prev => prev.filter(t => t.id !== id))
+    setRelations(prev => prev.filter(r => r.tache !== id))
+  }
   const addCategory = (cat) => setCategories(prev => [...prev, cat])
+  const deleteCategory = (id) => {
+    setCategories(prev => prev.filter(c => c.id !== id))
+    setRelations(prev => prev.filter(r => r.categorie !== id))
+    if (selectedDossier === id) setSelectedDossier(null)
+  }
+  const addRelation = (relation) => setRelations(prev => [...prev, relation])
 
   if (!started) {
     return (
@@ -73,7 +113,6 @@ export default function App() {
     )
   }
 
-  // Vue détail d'un dossier
   if (selectedDossier) {
     const cat = categories.find(c => c.id === selectedDossier)
     const taskIds = relations.filter(r => r.categorie === selectedDossier).map(r => r.tache)
@@ -86,8 +125,14 @@ export default function App() {
           tasks={dossierTasks}
           onBack={() => setSelectedDossier(null)}
           onUpdateTask={updateTask}
+          onDeleteTask={deleteTask}
         />
-        <Footer onAddTask={addTask} onAddCategory={addCategory} />
+        <Footer
+          onAddTask={addTask}
+          onAddCategory={addCategory}
+          categories={categories}
+          onAddRelation={addRelation}
+        />
       </div>
     )
   }
@@ -116,7 +161,8 @@ export default function App() {
             />
             <TaskList
               tasks={tasksFiltrees} categories={categories} relations={relations}
-              onUpdateTask={updateTask} onAddCategory={addCategory} toggleDossier={toggleDossier}
+              onUpdateTask={updateTask} onDeleteTask={deleteTask}
+              onAddCategory={addCategory} toggleDossier={toggleDossier}
             />
           </>
         ) : (
@@ -130,23 +176,25 @@ export default function App() {
                   const nbTaches = relations.filter(r => r.categorie === cat.id).length
                   const isFull = nbTaches > 0
                   return (
-                    <div
-                      key={cat.id}
-                      className="dossier-card"
-                      style={{ borderColor: hex }}
-                      onClick={() => setSelectedDossier(cat.id)}
-                    >
-                      <img
-                        src={isFull ? '/src/full-folder.png' : '/src/empty-folder.png'}
-                        alt={isFull ? 'Dossier plein' : 'Dossier vide'}
-                        className="dossier-icon"
-                      />
-                      <div className="dossier-card-title" style={{ color: hex }}>
-                        {cat.icon ? <span style={{ marginRight: '0.3rem' }}>{cat.icon}</span> : null}
-                        {cat.title}
+                    <div key={cat.id} className="dossier-card" style={{ borderColor: hex }}>
+                      <button
+                        className="dossier-delete-btn"
+                        onClick={e => { e.stopPropagation(); deleteCategory(cat.id) }}
+                        title="Supprimer ce dossier"
+                      >✕</button>
+                      <div onClick={() => setSelectedDossier(cat.id)} style={{ cursor: 'pointer' }}>
+                        <img
+                          src={isFull ? '/src/full-folder.png' : '/src/empty-folder.png'}
+                          alt={isFull ? 'Dossier plein' : 'Dossier vide'}
+                          className="dossier-icon"
+                        />
+                        <div className="dossier-card-title" style={{ color: hex }}>
+                          {cat.icon ? <span style={{ marginRight: '0.3rem' }}>{cat.icon}</span> : null}
+                          {cat.title}
+                        </div>
+                        {cat.description && <p className="dossier-card-desc">{cat.description}</p>}
+                        <p className="dossier-card-count">{nbTaches} tâche{nbTaches !== 1 ? 's' : ''}</p>
                       </div>
-                      {cat.description && <p className="dossier-card-desc">{cat.description}</p>}
-                      <p className="dossier-card-count">{nbTaches} tâche{nbTaches !== 1 ? 's' : ''}</p>
                     </div>
                   )
                 })}
@@ -156,7 +204,12 @@ export default function App() {
         )}
       </main>
 
-      <Footer onAddTask={addTask} onAddCategory={addCategory} />
+      <Footer
+        onAddTask={addTask}
+        onAddCategory={addCategory}
+        categories={categories}
+        onAddRelation={addRelation}
+      />
     </div>
   )
 }

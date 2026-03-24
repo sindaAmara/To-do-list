@@ -39,7 +39,17 @@
   min-width: 0;
 }
 
-
+.taskcard-title {
+  display: block;
+  font-family: 'Playfair Display', 'Times New Roman', serif;
+  font-weight: 700;
+  font-size: 1.08rem;
+  color: #7c3d6e;
+  margin-bottom: 0.35rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 .taskcard-meta {
   display: flex;
@@ -48,22 +58,10 @@
   flex-wrap: wrap;
 }
 
-.taskcard-title {
-  display: block;
-  font-family: 'Playfair Display', 'Times New Roman', serif;
-  font-weight: 700;
-  font-size: 0.97rem;
-  color: #7c3d6e;
-  margin-bottom: 0.35rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .taskcard-date {
   font-family: 'Playfair Display', 'Times New Roman', serif;
   font-style: italic;
-  font-size: 0.76rem;
+  font-size: 0.88rem;
   color: #be689a;
 }
 
@@ -75,7 +73,7 @@
 .taskcard-etat {
   font-family: 'Playfair Display', 'Times New Roman', serif;
   font-style: italic;
-  font-size: 0.72rem;
+  font-size: 0.84rem;
   font-weight: 600;
   padding: 0.15rem 0.55rem;
   border-radius: 999px;
@@ -95,7 +93,7 @@
 }
 
 .taskcard-cat {
-  font-size: 0.7rem;
+  font-size: 0.82rem;
   font-weight: 600;
   padding: 0.15rem 0.5rem;
   border-radius: 999px;
@@ -148,7 +146,7 @@
 }
 
 .taskcard-description {
-  font-size: 0.84rem;
+  font-size: 0.96rem;
   color: var(--text-muted);
   margin: 0.7rem 0 0.5rem;
   line-height: 1.5;
@@ -164,7 +162,7 @@
 }
 
 .taskcard-cats-label {
-  font-size: 0.72rem;
+  font-size: 0.84rem;
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -173,7 +171,7 @@
 }
 
 .taskcard-no-cats {
-  font-size: 0.76rem;
+  font-size: 0.88rem;
   color: var(--text-muted);
   font-style: italic;
 }
@@ -186,7 +184,7 @@
 }
 
 .taskcard-equipier {
-  font-size: 0.72rem;
+  font-size: 0.84rem;
   background: var(--bg);
   border: 1px solid var(--border);
   border-radius: 999px;
@@ -220,7 +218,7 @@
 }
 
 .taskcard-edit-row label {
-  font-size: 0.74rem;
+  font-size: 0.86rem;
   color: var(--text-muted);
   font-weight: 600;
   text-transform: uppercase;
@@ -233,7 +231,7 @@
   border-radius: 8px;
   padding: 0.45rem 0.7rem;
   color: var(--text);
-  font-size: 0.88rem;
+  font-size: 1rem;
   font-family: 'DM Sans', sans-serif;
   outline: none;
   transition: border-color 0.15s;
@@ -261,7 +259,7 @@
   padding: 0.45rem 1.1rem;
   border-radius: 8px;
   border: 1px solid transparent;
-  font-size: 0.84rem;
+  font-size: 0.96rem;
   font-family: 'DM Sans', sans-serif;
   font-weight: 600;
   cursor: pointer;
@@ -274,9 +272,7 @@
   border-color: var(--accent);
 }
 
-.btn--primary:hover {
-  opacity: 0.88;
-}
+.btn--primary:hover { opacity: 0.88; }
 
 .btn--ghost {
   background: transparent;
@@ -291,5 +287,23 @@
 
 .btn--sm {
   padding: 0.3rem 0.8rem;
-  font-size: 0.78rem;
+  font-size: 0.9rem;
+}
+
+.btn--danger {
+  background: transparent;
+  color: #FCA5A5;
+  border-color: #FCA5A544;
+}
+
+.btn--danger:hover {
+  background: #FCA5A511;
+  border-color: #FCA5A5;
+}
+
+.btn--danger-confirm {
+  background: #FCA5A522;
+  color: #ef4444;
+  border-color: #ef4444;
+  font-weight: 700;
 }
