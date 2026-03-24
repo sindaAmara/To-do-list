@@ -193,3 +193,42 @@
   background: color-mix(in srgb, var(--accent) 12%, var(--bg));
   color: var(--accent);
 }
+
+/* Sélecteur de dossiers dans TaskForm */
+.form-optional {
+  font-size: 0.7rem;
+  color: #be689a;
+  font-style: italic;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.form-cats {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.form-cat-btn {
+  padding: 0.28rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid #f0c4dd;
+  background: rgba(255,255,255,0.75);
+  color: #be689a;
+  font-family: 'Playfair Display', 'Times New Roman', serif;
+  font-style: italic;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.form-cat-btn:hover {
+  border-color: #e879a0;
+  color: #e879a0;
+}
+
+.form-cat-btn--active {
+  font-weight: 700;
+}

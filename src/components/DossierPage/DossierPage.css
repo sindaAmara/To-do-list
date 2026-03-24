@@ -13,7 +13,7 @@
   padding: 0.35rem 1rem;
   font-family: 'Playfair Display', serif;
   font-style: italic;
-  font-size: 0.88rem;
+  font-size: 1rem;
   color: #3f6472;
   cursor: pointer;
   margin-bottom: 1.5rem;
@@ -44,7 +44,6 @@
   min-height: 500px;
 }
 
-/* Spirale verte */
 .cahier-spirale {
   width: 36px;
   background: #dce7e8;
@@ -66,7 +65,6 @@
   box-shadow: inset 0 1px 3px rgba(63, 100, 114, 0.2);
 }
 
-/* Contenu cahier — lignes vertes */
 .cahier-contenu {
   flex: 1;
   padding: 2rem 2.5rem;
@@ -83,7 +81,6 @@
   line-height: 36px;
 }
 
-/* Header centré */
 .cahier-header {
   border-bottom: 2px solid currentColor;
   margin-bottom: 1rem;
@@ -100,12 +97,14 @@
   margin-bottom: 0.2rem;
 }
 
+.cahier-icon {
+  font-size: 1.6rem;
+  line-height: 1;
+}
 
-
-/* Titre garde la couleur du dossier via style={{ color: hex }} dans le JSX */
 .cahier-titre {
   font-family: 'Playfair Display', serif;
-  font-size: 2rem;
+  font-size: 2.2rem;
   font-weight: 700;
   letter-spacing: -0.01em;
   line-height: 1.2;
@@ -114,7 +113,7 @@
 
 .cahier-desc {
   font-family: 'Caveat', cursive;
-  font-size: 1.15rem;
+  font-size: 1.25rem;
   color: #4a3060;
   margin-top: 0.2rem;
   line-height: 1.4;
@@ -124,13 +123,12 @@
 .cahier-nb {
   font-family: 'Playfair Display', serif;
   font-style: italic;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   margin-top: 0.2rem;
   opacity: 0.8;
   text-align: center;
 }
 
-/* Liste */
 .cahier-liste {
   list-style: none;
   padding: 0;
@@ -157,7 +155,7 @@
 
 .cahier-num {
   font-family: 'Caveat', cursive;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: #3f6472;
   min-width: 24px;
   text-align: right;
@@ -165,7 +163,6 @@
   font-weight: 600;
 }
 
-/* Case à cocher */
 .cahier-check {
   width: 18px;
   height: 18px;
@@ -198,7 +195,6 @@
   line-height: 1;
 }
 
-/* Infos tâche */
 .cahier-task-info {
   flex: 1;
   display: flex;
@@ -209,7 +205,7 @@
 
 .cahier-task-title {
   font-family: 'Playfair Display', serif;
-  font-size: 1rem;
+  font-size: 1.1rem;
   color: #2c5260;
   font-weight: 600;
   white-space: nowrap;
@@ -220,13 +216,13 @@
 
 .cahier-task-title--done {
   text-decoration: line-through;
-  color: #194e5e;
+  color: #9dbec8;
   font-weight: 400;
 }
 
 .cahier-task-desc {
   font-family: 'Caveat', cursive;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: #3f6472;
   white-space: nowrap;
   overflow: hidden;
@@ -234,7 +230,6 @@
   flex-shrink: 1;
 }
 
-/* Meta droite */
 .cahier-task-meta {
   display: flex;
   align-items: center;
@@ -244,7 +239,7 @@
 
 .cahier-task-date {
   font-family: 'Caveat', cursive;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: #3f6472;
   white-space: nowrap;
   font-weight: 600;
@@ -253,7 +248,7 @@
 .cahier-task-etat {
   font-family: 'Playfair Display', serif;
   font-style: italic;
-  font-size: 0.75rem;
+  font-size: 0.86rem;
   padding: 0.1rem 0.5rem;
   border-radius: 999px;
   border: 1px solid;
@@ -261,7 +256,6 @@
   line-height: 1.4;
 }
 
-/* Vide */
 .cahier-vide {
   display: flex;
   align-items: center;
@@ -273,7 +267,6 @@
   font-style: italic;
 }
 
-/* Footer */
 .cahier-footer {
   display: flex;
   align-items: center;
@@ -284,7 +277,7 @@
   border-top: 1px dashed #b2d4d8;
   font-family: 'Playfair Display', serif;
   font-style: italic;
-  font-size: 0.85rem;
+  font-size: 0.96rem;
   color: #3f6472;
   height: 36px;
 }

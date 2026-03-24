@@ -19,7 +19,7 @@
 .filterbar-label {
   font-family: 'Playfair Display', 'Times New Roman', serif;
   font-style: italic;
-  font-size: 0.78rem;
+  font-size: 0.9rem;
   color: #be689a;
   font-weight: 700;
   min-width: 52px;
@@ -42,7 +42,7 @@
   color: #be689a;
   font-family: 'Playfair Display', 'Times New Roman', serif;
   font-style: italic;
-  font-size: 0.78rem;
+  font-size: 0.9rem;
   font-weight: 400;
   cursor: pointer;
   transition: all 0.15s ease;
@@ -77,13 +77,13 @@
 }
 
 .chip-arrow {
-  font-size: 0.72rem;
+  font-size: 0.84rem;
 }
 
 .filterbar-count {
   font-family: 'Playfair Display', 'Times New Roman', serif;
   font-style: italic;
-  font-size: 0.76rem;
+  font-size: 0.88rem;
   color: #d4a0be;
   padding-top: 0.1rem;
 }

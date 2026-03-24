@@ -45,14 +45,14 @@
 
 .tasklist-empty p {
   font-family: 'Playfair Display', 'Times New Roman', serif;
-  font-size: 1.05rem;
+  font-size: 1.18rem;
   font-style: italic;
   color: #be689a;
 }
 
 .tasklist-empty-sub {
   font-family: 'Playfair Display', 'Times New Roman', serif;
-  font-size: 0.82rem;
+  font-size: 0.95rem;
   margin-top: 0.4rem;
   color: #d4a0be;
   font-style: italic;
