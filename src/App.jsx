@@ -10,9 +10,7 @@ import DossierPage from './components/DossierPage/DossierPage'
 import './App.css'
 
 export default function App() {
-  const [started, setStarted] = useState(() =>
-    localStorage.getItem('started') === 'true'
-  )
+  const [started, setStarted] = useState(false)
   const [confirmReset, setConfirmReset] = useState(false)
 
   const [tasks, setTasks] = useState(() =>
@@ -36,19 +34,22 @@ export default function App() {
     tri, triDesc, toggleEtat, toggleDossier, toggleEnCours, setTriOption,
   } = useTasks(tasks, categories, relations)
 
-  const loadBackup = () => {
-    setTasks(initialData.tasks)
-    setCategories(initialData.categories)
-    setRelations(initialData.relations)
-    localStorage.setItem('started', 'true')
-    setStarted(true)
-  }
+  const hasData = tasks.length > 0 || categories.length > 0
 
+  const loadBackup = () => {
+    if (hasData) {
+      setStarted(true)
+    } else {
+      setTasks(initialData.tasks)
+      setCategories(initialData.categories)
+      setRelations(initialData.relations)
+      setStarted(true)
+    }
+  }
   const startBlank = () => {
     localStorage.removeItem('tasks')
     localStorage.removeItem('categories')
     localStorage.removeItem('relations')
-    localStorage.setItem('started', 'true')
     setTasks([])
     setCategories([])
     setRelations([])
@@ -60,7 +61,6 @@ export default function App() {
       localStorage.removeItem('tasks')
       localStorage.removeItem('categories')
       localStorage.removeItem('relations')
-      localStorage.removeItem('started')
       setTasks([])
       setCategories([])
       setRelations([])
@@ -98,7 +98,10 @@ export default function App() {
             <span className="sparkle sparkle-4">✦</span>
           </div>
           <p className="startup-sub">
-            Bienvenue ! Souhaitez-vous charger les données de sauvegarde ou démarrer de zéro ?
+            {hasData
+              ? `Vous avez ${tasks.length} tâche${tasks.length !== 1 ? 's' : ''} et ${categories.length} dossier${categories.length !== 1 ? 's' : ''} sauvegardés.`
+              : 'Bienvenue ! Souhaitez-vous charger les données de sauvegarde ou démarrer de zéro ?'
+            }
           </p>
           <div className="startup-actions">
             <button className="startup-btn startup-btn--primary" onClick={loadBackup}>📂 Charger le backup (9 tâches)</button>

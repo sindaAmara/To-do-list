@@ -86,7 +86,7 @@ input, textarea, select { font-family: inherit; }
 
 .sparkle {
   position: absolute;
-  color: silver;
+  color: gold;
   font-size: 1rem;
   animation: sparkle-pop 2s ease-in-out infinite;
   pointer-events: none;
