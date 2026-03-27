@@ -1,13 +1,26 @@
 import { useState } from 'react'
-import TaskCard from '../TaskCard/TaskCard'
+import { useTodo } from '../../contexts/TodoContext'
+import TaskCard     from '../TaskCard/TaskCard'
 import TaskCardFull from '../TaskCard/TaskCardFull'
 import './TaskList.css'
 
-export default function TaskList({ tasks, categories, relations, onUpdateTask, onDeleteTask, onAddCategory, toggleDossier }) {
+export default function TaskList() {
+  const {
+    tasksFiltrees,
+    categories,
+    relations,
+    updateTask,
+    deleteTask,
+    addCategory,
+    toggleDossier,
+  } = useTodo()
+
   const [openIds, setOpenIds] = useState([])
 
   const toggleOpen = (id) => {
-    setOpenIds(prev => prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id])
+    setOpenIds(prev =>
+      prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
+    )
   }
 
   const getCategoriesOfTask = (taskId) => {
@@ -15,7 +28,7 @@ export default function TaskList({ tasks, categories, relations, onUpdateTask, o
     return categories.filter(c => catIds.includes(c.id))
   }
 
-  if (tasks.length === 0) {
+  if (!tasksFiltrees || tasksFiltrees.length === 0) {
     return (
       <div className="tasklist-empty">
         <span className="tasklist-empty-icon">🎉</span>
@@ -27,29 +40,30 @@ export default function TaskList({ tasks, categories, relations, onUpdateTask, o
 
   return (
     <div className="tasklist">
-      {tasks.map(task => {
-        const cats = getCategoriesOfTask(task.id)
+      {tasksFiltrees.map(task => {
+        const cats   = getCategoriesOfTask(task.id)
         const isOpen = openIds.includes(task.id)
         return (
           <div key={task.id} className={`tasklist-item ${isOpen ? 'tasklist-item--open' : ''}`}>
-            {isOpen
-              ? <TaskCardFull
-                  task={task}
-                  categories={cats}
-                  allCategories={categories}
-                  onToggle={() => toggleOpen(task.id)}
-                  onUpdateTask={onUpdateTask}
-                  onDeleteTask={onDeleteTask}
-                  onAddCategory={onAddCategory}
-                  toggleDossier={toggleDossier}
-                />
-              : <TaskCard
-                  task={task}
-                  categories={cats}
-                  onToggle={() => toggleOpen(task.id)}
-                  toggleDossier={toggleDossier}
-                />
-            }
+            {isOpen ? (
+              <TaskCardFull
+                task={task}
+                categories={cats}
+                allCategories={categories}
+                onToggle={() => toggleOpen(task.id)}
+                onUpdateTask={updateTask}
+                onDeleteTask={deleteTask}
+                onAddCategory={addCategory}
+                toggleDossier={toggleDossier}
+              />
+            ) : (
+              <TaskCard
+                task={task}
+                categories={cats}
+                onToggle={() => toggleOpen(task.id)}
+                toggleDossier={toggleDossier}
+              />
+            )}
           </div>
         )
       })}

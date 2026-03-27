@@ -1,31 +1,32 @@
+import { useTodo } from '../../contexts/TodoContext'
 import { ETATS, ETAT_TERMINE } from '../../constants/enums'
 import './Header.css'
 
-export default function Header({ tasks }) {
-  const total = tasks.length
+export default function Header() {
+  const { tasks } = useTodo()
+
+  const total       = tasks.length
   const nonTermines = tasks.filter(t => !ETAT_TERMINE.includes(t.etat)).length
 
-  // Stats par état pour le camembert
+  const couleurEtat = {
+    [ETATS.NOUVEAU]:    '#C084FC',
+    [ETATS.EN_COURS]:   '#67E8F9',
+    [ETATS.REUSSI]:     '#86EFAC',
+    [ETATS.EN_ATTENTE]: '#FDE68A',
+    [ETATS.ABANDONNE]:  '#FCA5A5',
+  }
+
   const statsEtats = Object.values(ETATS).map(etat => ({
     etat,
     count: tasks.filter(t => t.etat === etat).length,
   })).filter(s => s.count > 0)
 
-  const couleurEtat = {
-  [ETATS.NOUVEAU]:    '#C084FC',
-  [ETATS.EN_COURS]:  '#67E8F9', 
-  [ETATS.REUSSI]:    '#86EFAC',
-  [ETATS.EN_ATTENTE]:'#FDE68A',
-  [ETATS.ABANDONNE]: '#FCA5A5',
-}
-
-  // Camembert SVG simple
   const renderPie = () => {
     if (total === 0) return null
     const cx = 50, cy = 50, r = 40
     let startAngle = -Math.PI / 2
     const slices = statsEtats.map(s => {
-      const angle = (s.count / total) * 2 * Math.PI
+      const angle    = (s.count / total) * 2 * Math.PI
       const endAngle = startAngle + angle
       const x1 = cx + r * Math.cos(startAngle)
       const y1 = cy + r * Math.sin(startAngle)

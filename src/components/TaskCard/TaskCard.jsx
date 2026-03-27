@@ -2,11 +2,11 @@ import { COULEURS } from '../../constants/enums'
 import './TaskCard.css'
 
 const ETAT_COLORS = {
-  'Nouveau': '#6366F1',
-  'En cours': '#38BDF8',
-  'Réussi': '#22C55E',
-  'En attente': '#EAB308',
-  'Abandonné': '#EF4444',
+  'Nouveau': '#C084FC',
+  'En cours': '#67E8F9',
+  'Réussi': '#86EFAC',
+  'En attente': '#FDE68A',
+  'Abandonné': '#FCA5A5',
 }
 
 function formatDate(str) {
