@@ -1,91 +1,27 @@
-import { useState, useEffect } from 'react'
-import initialData from './datas/initialData'
+import { useTodo } from './contexts/TodoContext'
 import { COULEURS } from './constants/enums'
-import { useTasks } from './hooks/useTasks'
-import Header from './components/Header/Header'
-import FilterBar from './components/FilterBar/FilterBar'
-import TaskList from './components/TaskList/TaskList'
-import Footer from './components/Footer/Footer'
+import Header      from './components/Header/Header'
+import FilterBar   from './components/FilterBar/FilterBar'
+import TaskList    from './components/TaskList/TaskList'
+import Footer      from './components/Footer/Footer'
 import DossierPage from './components/DossierPage/DossierPage'
 import './App.css'
 
 export default function App() {
-  const [started, setStarted] = useState(false)
-  const [confirmReset, setConfirmReset] = useState(false)
-
-  const [tasks, setTasks] = useState(() =>
-    JSON.parse(localStorage.getItem('tasks') || 'null') || []
-  )
-  const [categories, setCategories] = useState(() =>
-    JSON.parse(localStorage.getItem('categories') || 'null') || []
-  )
-  const [relations, setRelations] = useState(() =>
-    JSON.parse(localStorage.getItem('relations') || 'null') || []
-  )
-  const [view, setView] = useState('tasks')
-  const [selectedDossier, setSelectedDossier] = useState(null)
-
-  useEffect(() => { localStorage.setItem('tasks', JSON.stringify(tasks)) }, [tasks])
-  useEffect(() => { localStorage.setItem('categories', JSON.stringify(categories)) }, [categories])
-  useEffect(() => { localStorage.setItem('relations', JSON.stringify(relations)) }, [relations])
-
   const {
+    tasks, categories, relations,
+    started, confirmReset,
+    selectedDossier, setSelectedDossier,
+    view, setView,
+    hasData,
+    loadBackup, startBlank, handleReset,
+    addTask, updateTask, deleteTask,
+    addCategory, deleteCategory, addRelation,
     tasksFiltrees, filtreEtats, filtreDossiers, filtreEnCours,
     tri, triDesc, toggleEtat, toggleDossier, toggleEnCours, setTriOption,
-  } = useTasks(tasks, categories, relations)
+  } = useTodo()
 
-  const hasData = tasks.length > 0 || categories.length > 0
-
-  const loadBackup = () => {
-    if (hasData) {
-      setStarted(true)
-    } else {
-      setTasks(initialData.tasks)
-      setCategories(initialData.categories)
-      setRelations(initialData.relations)
-      setStarted(true)
-    }
-  }
-  const startBlank = () => {
-    localStorage.removeItem('tasks')
-    localStorage.removeItem('categories')
-    localStorage.removeItem('relations')
-    setTasks([])
-    setCategories([])
-    setRelations([])
-    setStarted(true)
-  }
-
-  const handleReset = () => {
-    if (confirmReset) {
-      localStorage.removeItem('tasks')
-      localStorage.removeItem('categories')
-      localStorage.removeItem('relations')
-      setTasks([])
-      setCategories([])
-      setRelations([])
-      setConfirmReset(false)
-      setStarted(false)
-    } else {
-      setConfirmReset(true)
-    }
-  }
-
-  // ===== CRUD =====
-  const addTask = (task) => setTasks(prev => [...prev, task])
-  const updateTask = (id, changes) => setTasks(prev => prev.map(t => t.id === id ? { ...t, ...changes } : t))
-  const deleteTask = (id) => {
-    setTasks(prev => prev.filter(t => t.id !== id))
-    setRelations(prev => prev.filter(r => r.tache !== id))
-  }
-  const addCategory = (cat) => setCategories(prev => [...prev, cat])
-  const deleteCategory = (id) => {
-    setCategories(prev => prev.filter(c => c.id !== id))
-    setRelations(prev => prev.filter(r => r.categorie !== id))
-    if (selectedDossier === id) setSelectedDossier(null)
-  }
-  const addRelation = (relation) => setRelations(prev => [...prev, relation])
-
+  // --- ÉCRAN DE DÉMARRAGE ---
   if (!started) {
     return (
       <div className="startup-overlay">
@@ -104,8 +40,12 @@ export default function App() {
             }
           </p>
           <div className="startup-actions">
-            <button className="startup-btn startup-btn--primary" onClick={loadBackup}>📂 Charger le backup (9 tâches)</button>
-            <button className="startup-btn startup-btn--ghost" onClick={startBlank}>✨ Démarrer de zéro</button>
+            <button className="startup-btn startup-btn--primary" onClick={loadBackup}>
+              📂 Charger le backup (9 tâches)
+            </button>
+            <button className="startup-btn startup-btn--ghost" onClick={startBlank}>
+              ✨ Démarrer de zéro
+            </button>
             {confirmReset
               ? <button className="startup-btn startup-btn--danger" onClick={handleReset}>⚠ Confirmer le reset ?</button>
               : <button className="startup-btn startup-btn--danger" onClick={handleReset}>🗑 Réinitialiser</button>
@@ -116,13 +56,15 @@ export default function App() {
     )
   }
 
+  // --- VUE DOSSIER ---
   if (selectedDossier) {
-    const cat = categories.find(c => c.id === selectedDossier)
-    const taskIds = relations.filter(r => r.categorie === selectedDossier).map(r => r.tache)
+    const cat        = categories.find(c => c.id === selectedDossier)
+    const taskIds    = relations.filter(r => r.categorie === selectedDossier).map(r => r.tache)
     const dossierTasks = tasks.filter(t => taskIds.includes(t.id))
+
     return (
       <div className="app">
-        <Header tasks={tasks} />
+        <Header />
         <DossierPage
           category={cat}
           tasks={dossierTasks}
@@ -130,25 +72,27 @@ export default function App() {
           onUpdateTask={updateTask}
           onDeleteTask={deleteTask}
         />
-        <Footer
-          onAddTask={addTask}
-          onAddCategory={addCategory}
-          categories={categories}
-          onAddRelation={addRelation}
-        />
+        <Footer />
       </div>
     )
   }
 
+  // --- VUE PRINCIPALE ---
   return (
     <div className="app">
-      <Header tasks={tasks} />
+      <Header />
 
       <div className="view-toggle">
-        <button className={`view-toggle-btn ${view === 'tasks' ? 'view-toggle-btn--active' : ''}`} onClick={() => setView('tasks')}>
+        <button
+          className={`view-toggle-btn ${view === 'tasks' ? 'view-toggle-btn--active' : ''}`}
+          onClick={() => setView('tasks')}
+        >
           ✓ Tâches
         </button>
-        <button className={`view-toggle-btn ${view === 'folders' ? 'view-toggle-btn--active' : ''}`} onClick={() => setView('folders')}>
+        <button
+          className={`view-toggle-btn ${view === 'folders' ? 'view-toggle-btn--active' : ''}`}
+          onClick={() => setView('folders')}
+        >
           📁 Dossiers
         </button>
       </div>
@@ -157,16 +101,19 @@ export default function App() {
         {view === 'tasks' ? (
           <>
             <FilterBar
-              categories={categories} filtreEtats={filtreEtats} filtreDossiers={filtreDossiers}
-              filtreEnCours={filtreEnCours} tri={tri} triDesc={triDesc}
-              toggleEtat={toggleEtat} toggleDossier={toggleDossier} toggleEnCours={toggleEnCours}
-              setTriOption={setTriOption} nbResultats={tasksFiltrees.length}
+              categories={categories}
+              filtreEtats={filtreEtats}
+              filtreDossiers={filtreDossiers}
+              filtreEnCours={filtreEnCours}
+              tri={tri}
+              triDesc={triDesc}
+              toggleEtat={toggleEtat}
+              toggleDossier={toggleDossier}
+              toggleEnCours={toggleEnCours}
+              setTriOption={setTriOption}
+              nbResultats={tasksFiltrees.length}
             />
-            <TaskList
-              tasks={tasksFiltrees} categories={categories} relations={relations}
-              onUpdateTask={updateTask} onDeleteTask={deleteTask}
-              onAddCategory={addCategory} toggleDossier={toggleDossier}
-            />
+            <TaskList />
           </>
         ) : (
           <div>
@@ -175,9 +122,9 @@ export default function App() {
             ) : (
               <div className="dossiers-grid">
                 {categories.map(cat => {
-                  const hex = COULEURS[cat.color] || '#888'
+                  const hex     = COULEURS[cat.color] || '#888'
                   const nbTaches = relations.filter(r => r.categorie === cat.id).length
-                  const isFull = nbTaches > 0
+                  const isFull  = nbTaches > 0
                   return (
                     <div key={cat.id} className="dossier-card" style={{ borderColor: hex }}>
                       <button
@@ -207,12 +154,7 @@ export default function App() {
         )}
       </main>
 
-      <Footer
-        onAddTask={addTask}
-        onAddCategory={addCategory}
-        categories={categories}
-        onAddRelation={addRelation}
-      />
+      <Footer />
     </div>
   )
 }

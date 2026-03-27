@@ -1,10 +1,12 @@
 import { useState } from 'react'
-import Modal from '../Modal/Modal'
-import TaskForm from '../Modal/TaskForm'
+import { useTodo } from '../../contexts/TodoContext'
+import Modal      from '../Modal/Modal'
+import TaskForm   from '../Modal/TaskForm'
 import FolderForm from '../Modal/FolderForm'
 import './Footer.css'
 
-export default function Footer({ onAddTask, onAddCategory, categories = [], onAddRelation }) {
+export default function Footer() {
+  const { addTask, addCategory, categories, addRelation } = useTodo()
   const [modalType, setModalType] = useState(null)
 
   return (
@@ -14,18 +16,10 @@ export default function Footer({ onAddTask, onAddCategory, categories = [], onAd
           <span className="footer-copy">ToDo List — Projet React</span>
         </div>
         <div className="footer-actions">
-          <button
-            className="footer-btn footer-btn--secondary"
-            onClick={() => setModalType('folder')}
-            title="Créer un dossier"
-          >
+          <button className="footer-btn footer-btn--secondary" onClick={() => setModalType('folder')}>
             <span>📁</span> Dossier
           </button>
-          <button
-            className="footer-btn footer-btn--primary"
-            onClick={() => setModalType('task')}
-            title="Créer une tâche"
-          >
+          <button className="footer-btn footer-btn--primary" onClick={() => setModalType('task')}>
             <span className="footer-plus">+</span> Tâche
           </button>
         </div>
@@ -34,10 +28,10 @@ export default function Footer({ onAddTask, onAddCategory, categories = [], onAd
       {modalType === 'task' && (
         <Modal title="Nouvelle tâche" onClose={() => setModalType(null)}>
           <TaskForm
-            onSubmit={onAddTask}
+            onSubmit={addTask}
             onClose={() => setModalType(null)}
             categories={categories}
-            onAddRelation={onAddRelation}
+            onAddRelation={addRelation}
           />
         </Modal>
       )}
@@ -45,7 +39,7 @@ export default function Footer({ onAddTask, onAddCategory, categories = [], onAd
       {modalType === 'folder' && (
         <Modal title="Nouveau dossier" onClose={() => setModalType(null)}>
           <FolderForm
-            onSubmit={onAddCategory}
+            onSubmit={addCategory}
             onClose={() => setModalType(null)}
           />
         </Modal>
