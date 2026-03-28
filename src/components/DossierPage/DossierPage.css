@@ -3,7 +3,7 @@
 .dossier-page {
   min-height: 100%;
   background: linear-gradient(160deg, #f0fafa 0%, #fdf0f8 60%, #eaf4f4 100%);
-  padding: 1.5rem 2rem 3rem;
+  padding: 1.5rem 1.5rem 3rem;
 }
 
 .dossier-page-back {
@@ -44,6 +44,7 @@
   min-height: 500px;
 }
 
+/* ===== Spirale ===== */
 .cahier-spirale {
   width: 36px;
   background: #dce7e8;
@@ -65,9 +66,10 @@
   box-shadow: inset 0 1px 3px rgba(63, 100, 114, 0.2);
 }
 
+/* ===== Contenu ===== */
 .cahier-contenu {
   flex: 1;
-  padding: 2rem 2.5rem;
+  padding: 2rem 2rem;
   background-image:
     repeating-linear-gradient(
       transparent,
@@ -79,8 +81,10 @@
   background-position: 0 0;
   position: relative;
   line-height: 36px;
+  min-width: 0;
 }
 
+/* ===== Header ===== */
 .cahier-header {
   border-bottom: 2px solid currentColor;
   margin-bottom: 1rem;
@@ -104,16 +108,17 @@
 
 .cahier-titre {
   font-family: 'Playfair Display', serif;
-  font-size: 2.2rem;
+  font-size: clamp(1.4rem, 5vw, 2.2rem);
   font-weight: 700;
   letter-spacing: -0.01em;
   line-height: 1.2;
   text-align: center;
+  word-break: break-word;
 }
 
 .cahier-desc {
   font-family: 'Caveat', cursive;
-  font-size: 1.25rem;
+  font-size: clamp(1rem, 3vw, 1.25rem);
   color: #4a3060;
   margin-top: 0.2rem;
   line-height: 1.4;
@@ -123,12 +128,13 @@
 .cahier-nb {
   font-family: 'Playfair Display', serif;
   font-style: italic;
-  font-size: 1.05rem;
+  font-size: clamp(0.88rem, 2.5vw, 1.05rem);
   margin-top: 0.2rem;
   opacity: 0.8;
   text-align: center;
 }
 
+/* ===== Liste ===== */
 .cahier-liste {
   list-style: none;
   padding: 0;
@@ -138,7 +144,7 @@
 .cahier-ligne {
   display: flex;
   align-items: center;
-  gap: 0.8rem;
+  gap: 0.6rem;
   height: 36px;
   padding: 0 0.2rem;
   transition: background 0.15s;
@@ -157,7 +163,7 @@
   font-family: 'Caveat', cursive;
   font-size: 1rem;
   color: #3f6472;
-  min-width: 24px;
+  min-width: 22px;
   text-align: right;
   flex-shrink: 0;
   font-weight: 600;
@@ -195,17 +201,19 @@
   line-height: 1;
 }
 
+/* ===== Infos tâche ===== */
 .cahier-task-info {
   flex: 1;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.4rem;
   min-width: 0;
+  overflow: hidden;
 }
 
 .cahier-task-title {
   font-family: 'Playfair Display', serif;
-  font-size: 1.1rem;
+  font-size: clamp(0.88rem, 2.5vw, 1.1rem);
   color: #2c5260;
   font-weight: 600;
   white-space: nowrap;
@@ -230,16 +238,17 @@
   flex-shrink: 1;
 }
 
+/* ===== Meta (date + état) ===== */
 .cahier-task-meta {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.4rem;
   flex-shrink: 0;
 }
 
 .cahier-task-date {
   font-family: 'Caveat', cursive;
-  font-size: 1rem;
+  font-size: clamp(0.82rem, 2vw, 1rem);
   color: #3f6472;
   white-space: nowrap;
   font-weight: 600;
@@ -248,7 +257,7 @@
 .cahier-task-etat {
   font-family: 'Playfair Display', serif;
   font-style: italic;
-  font-size: 0.86rem;
+  font-size: clamp(0.72rem, 1.8vw, 0.86rem);
   padding: 0.1rem 0.5rem;
   border-radius: 999px;
   border: 1px solid;
@@ -256,6 +265,7 @@
   line-height: 1.4;
 }
 
+/* ===== Vide + Footer ===== */
 .cahier-vide {
   display: flex;
   align-items: center;
@@ -277,7 +287,65 @@
   border-top: 1px dashed #b2d4d8;
   font-family: 'Playfair Display', serif;
   font-style: italic;
-  font-size: 0.96rem;
+  font-size: clamp(0.82rem, 2vw, 0.96rem);
   color: #3f6472;
   height: 36px;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 600px) {
+  .dossier-page {
+    padding: 1rem 0.8rem 3rem;
+  }
+
+  /* spirale plus fine sur mobile */
+  .cahier-spirale {
+    width: 24px;
+  }
+
+  .spirale-anneau {
+    width: 12px;
+    height: 12px;
+    border-width: 2px;
+  }
+
+  .cahier-contenu {
+    padding: 1.2rem 1rem;
+  }
+
+  /* on masque la date sur très petit écran pour gagner de la place */
+  .cahier-task-date {
+    display: none;
+  }
+
+  /* on masque l'état aussi si besoin */
+  .cahier-task-etat {
+    display: none;
+  }
+
+  .cahier-task-desc {
+    display: none;
+  }
+}
+
+@media (max-width: 400px) {
+  .cahier {
+    border-radius: 4px 8px 8px 4px;
+    box-shadow:
+      -3px 0 0 #b2d4d8,
+      0 4px 16px rgba(63, 100, 114, 0.12);
+  }
+
+  .cahier-spirale {
+    width: 20px;
+  }
+
+  .spirale-anneau {
+    width: 10px;
+    height: 10px;
+  }
+
+  .cahier-contenu {
+    padding: 1rem 0.8rem;
+  }
 }
